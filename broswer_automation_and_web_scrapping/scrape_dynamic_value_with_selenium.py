@@ -1,5 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import time
+
 def get_driver():
     options = webdriver.EdgeOptions()
     options.add_argument("disable-infobars")
@@ -13,9 +15,15 @@ def get_driver():
     driver.get("https://automated.pythonanywhere.com/")
     return driver
 
+def clean_text(text):
+    """Extract only the temperature from text"""
+    output = float(text.split(": ")[1])
+    return output
+
 def main():
     driver = get_driver()
-    element = driver.find_element(By.XPATH, "/div")
-    return element.text
+    time.sleep(2)
+    element = driver.find_element(By.XPATH, "/html/body/div[1]/div/h1[2]")
+    return clean_text(element.text)
 
 print(main())
